@@ -1,2 +1,0 @@
-# NLP_Technical_Blog_JPtoCN_Transformer
-NLP课程作业：一篇关于利用Transformer将日文翻译为中文的技术博客
