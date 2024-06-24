@@ -1,9 +1,8 @@
-# Japanese-Chinese Machine Translation Model with Transformer & PyTorch
-A tutorial using Jupyter Notebook, PyTorch, Torchtext, and SentencePiece
+# 基于 Transformer 和 PyTorch 的日汉机器翻译模型
+使用 Jupyter Notebook、PyTorch、Torchtext 和 SentencePiece 的教程
 
-## Import required packages
-Firstly, let’s make sure we have the below packages installed in our system, if you found that some packages are missing, make sure to install them.
-
+## 导入所需的包
+首先，让我们确保在系统中安装了以下软件包，如果发现缺少某些软件包，请确保安装它们。 
 
 ```python
 import math
@@ -52,8 +51,8 @@ device
 
 
 
-## Get the parallel dataset
-In this tutorial, we will use the Japanese-English parallel dataset downloaded from JParaCrawl![http://www.kecl.ntt.co.jp/icl/lirg/jparacrawl] which is described as the “largest publicly available English-Japanese parallel corpus created by NTT. It was created by largely crawling the web and automatically aligning parallel sentences.” You can also see the paper here.
+## 获取平行语料库
+在本教程中，我们将使用从 JParaCrawl 下载的日英平行语料库！[http://www.kecl.ntt.co.jp/icl/lirg/jparacrawl]，该语料库被描述为“由 NTT 创建的最大公开可用的英日平行语料库。它主要是通过抓取网络和自动对齐平行句子创建的”。您也可以在这里查看论文。
 
 
 ```python
@@ -64,13 +63,10 @@ trainja = df[3].values.tolist()#[:10000]
 # trainja.pop(5972)
 ```
 
-After importing all the Japanese and their English counterparts, I deleted the last data in the dataset because it has a missing value. In total, the number of sentences in both trainen and trainja is 5,973,071, however, for learning purposes, it is often recommended to sample the data and make sure everything is working as intended, before using all the data at once, to save time.
+导入所有日语及其对应的英语后，我删除了数据集中最后一个数据，因为它缺少值。trainen 和 trainja 中的句子总数为 5,973,071，但是，出于学习目的，通常建议对数据进行采样，并确保一切按预期工作，然后再一次使用所有数据，以节省时间。
 
 
-
-Here is an example of sentence contained in the dataset.
-
-
+以下是数据集中包含的句子示例。
 
 
 ```python
@@ -82,10 +78,11 @@ print(trainja[500])
     Japanese HS Code Harmonized Code System < HSコード 2905 非環式アルコール並びにそのハロゲン化誘導体、スルホン化誘導体、ニトロ化誘導体及びニトロソ化誘導体 HS Code List (Harmonized System Code) for US, UK, EU, China, India, France, Japan, Russia, Germany, Korea, Canada ...
     
 
-We can also use different parallel datasets to follow along with this article, just make sure that we can process the data into the two lists of strings as shown above, containing the Japanese and English sentences.
+我们也可以使用不同的平行语料库来学习本文，只需确保我们可以像上面显示的那样将数据处理成两个字符串列表，分别包含日语和英语句子。
 
-## Prepare the tokenizers
-Unlike English or other alphabetical languages, a Japanese sentence does not contain whitespaces to separate the words. We can use the tokenizers provided by JParaCrawl which was created using SentencePiece for both Japanese and English, you can visit the JParaCrawl website to download them, or click here.
+## 准备分词器
+与英语或其他字母语言不同，日语句子不包含用于分隔单词的空格。我们可以使用 JParaCrawl 提供的分词器，该分词器是使用 SentencePiece 为日语和英语创建的，您可以访问 JParaCrawl 网站下载它们，或单击此处。 
+
 
 
 ```python
@@ -161,8 +158,9 @@ ja_tokenizer.encode("年金 日本に住んでいる20歳~60歳の全ての人�
 
 
 
-## Build the TorchText Vocab objects and convert the sentences into Torch tensors
-Using the tokenizers and raw sentences, we then build the Vocab object imported from TorchText. This process can take a few seconds or minutes depending on the size of our dataset and computing power. Different tokenizer can also affect the time needed to build the vocab, I tried several other tokenizers for Japanese but SentencePiece seems to be working well and fast enough for me.
+## 构建 TorchText 词汇表对象并将句子转换为 Torch 张量
+使用分词器和原始句子，我们然后构建从 TorchText 导入的 Vocab 对象。此过程可能需要几秒钟或几分钟，具体取决于我们数据集的大小和计算能力。不同的分词器也会影响构建词汇表所需的时间，我尝试了其他几种日语分词器，但 SentencePiece 似乎运行良好且对我来说足够快。 
+
 
 
 ```python
@@ -182,9 +180,7 @@ en_vocab = build_vocab(trainen, en_tokenizer)
 
 ```
 
-After we have the vocabulary objects, we can then use the vocab and the tokenizer objects to build the tensors for our training data.
-
-
+在获得词汇表对象后，我们就可以使用词汇表和分词器对象为我们的训练数据构建张量。 
 
 
 ```python
@@ -207,8 +203,9 @@ train_data = data_process(trainja, trainen)
 
 ```
 
-## Create the DataLoader object to be iterated during training
-Here, I set the BATCH_SIZE to 16 to prevent “cuda out of memory”, but this depends on various things such as your machine memory capacity, size of data, etc., so feel free to change the batch size according to your needs (note: the tutorial from PyTorch sets the batch size as 128 using the Multi30k German-English dataset.)
+## 创建 DataLoader 对象以便在训练期间进行迭代
+在这里，我将 BATCH_SIZE 设置为 16 以防止出现“cuda 内存不足”，但这取决于各种因素，例如您的机器内存容量、数据大小等，因此请根据您的需要随意更改批处理大小（注意：PyTorch 的教程使用 Multi30k 德语-英语 数据集将批大小设置为 128。） 
+
 
 
 ```python
@@ -236,12 +233,13 @@ train_iter = DataLoader(train_data, batch_size=BATCH_SIZE,
 
 ```
 
-## Sequence-to-sequence Transformer
-The next couple of codes and text explanations (written in italic) are taken from the original PyTorch tutorial [https://pytorch.org/tutorials/beginner/translation_transformer.html]. I did not make any change except for the BATCH_SIZE and the word de_vocabwhich is changed to ja_vocab.
+##  序列到序列 Transformer
+接下来的几段代码和文字解释（用斜体表示）取自 PyTorch 官方教程 [https://pytorch.org/tutorials/beginner/translation_transformer.html](https://pytorch.org/tutorials/beginner/translation_transformer.html)。除了 BATCH_SIZE 和单词 de_vocab（已更改为 ja_vocab）之外，我没有进行任何更改。
 
-Transformer is a Seq2Seq model introduced in “Attention is all you need” paper for solving machine translation task. Transformer model consists of an encoder and decoder block each containing fixed number of layers.
+Transformer 是“Attention is all you need”论文中介绍的一种 Seq2Seq 模型，用于解决机器翻译任务。Transformer 模型由编码器和解码器块组成，每个块包含固定数量的层。
 
-Encoder processes the input sequence by propagating it, through a series of Multi-head Attention and Feed forward network layers. The output from the Encoder referred to as memory, is fed to the decoder along with target tensors. Encoder and decoder are trained in an end-to-end fashion using teacher forcing technique.
+编码器通过一系列多头注意力和前馈网络层传播输入序列来处理输入序列。编码器的输出称为内存，与目标张量一起馈送到解码器。编码器和解码器使用强制教学技术以端到端的方式进行训练。 
+
 
 
 ```python
@@ -306,8 +304,7 @@ class Seq2SeqTransformer(nn.Module):
 
 ```
 
-Text tokens are represented by using token embeddings. Positional encoding is added to the token embedding to introduce a notion of word order.
-
+文本标记通过使用标记嵌入来表示。位置编码被添加到标记嵌入中以引入词序的概念。
 
 
 
@@ -355,7 +352,8 @@ class TokenEmbedding(nn.Module):
 
 ```
 
-We create a subsequent word mask to stop a target word from attending to its subsequent words. We also create masks, for masking source and target padding tokens
+我们创建了一个后续词掩码，以阻止目标词关注其后续词。我们还创建了掩码，用于屏蔽源和目标填充标记。
+
 
 
 
@@ -475,13 +473,12 @@ def evaluate(model, val_iter):
     return losses / len(val_iter)  # 返回平均损失
 
 ```
+## 开始训练
+最后，在准备好必要的类和函数之后，我们就可以开始训练模型了。毫无疑问，完成训练所需的时间可能会有很大差异，这取决于很多因素，例如计算能力、参数和数据集的大小。
 
-## Start training
-Finally, after preparing the necessary classes and functions, we are ready to train our model. This goes without saying but the time needed to finish training could vary greatly depending on a lot of things such as computing power, parameters, and size of datasets.
+当我使用来自 JParaCrawl 的完整句子列表（每种语言约有 590 万个句子）训练模型时，使用单个 NVIDIA GeForce RTX 3070 GPU，每个 epoch 大约需要 5 个小时。
 
-When I trained the model using the complete list of sentences from JParaCrawl which has around 5.9 million sentences for each language, it took around 5 hours per epoch using a single NVIDIA GeForce RTX 3070 GPU.
-
-Here is the code:
+以下是代码：
 
 
 ```python
@@ -575,9 +572,9 @@ for epoch in tqdm.tqdm(range(1, NUM_EPOCHS+1)):
 
     
     
+## 使用训练好的模型尝试翻译日语句子
+首先，我们创建用于翻译新句子的函数，包括获取日语句子、分词、转换为张量、推理，然后将结果解码回句子等步骤，但这次是用英语。 
 
-## Try translating a Japanese sentence using the trained model
-First, we create the functions to translate a new sentence, including steps such as to get the Japanese sentence, tokenize, convert to tensors, inference, and then decode the result back into a sentence, but this time in English.
 
 
 ```python
@@ -685,8 +682,9 @@ trainja.pop(5)
 
 ```
 
-## Save the Vocab objects and trained model
-Finally, after the training has finished, we will save the Vocab objects (en_vocab and ja_vocab) first, using Pickle.
+## 保存词汇表对象和训练好的模型
+最后，训练完成后，我们将首先使用 Pickle 保存词汇表对象（en_vocab 和 ja_vocab）。 
+
 
 
 ```python
@@ -708,9 +706,7 @@ file.close()
 
 ```
 
-Lastly, we can also save the model for later use using PyTorch save and load functions. Generally, there are two ways to save the model depending what we want to use them for later. The first one is for inference only, we can load the model later and use it to translate from Japanese to English.
-
-
+最后，我们还可以使用 PyTorch 的保存和加载函数保存模型以供以后使用。通常，根据我们以后想用模型做什么，有两种保存模型的方法。第一种方法仅用于推理，我们可以稍后加载模型并使用它将日语翻译成英语。
 
 
 ```python
@@ -718,8 +714,7 @@ Lastly, we can also save the model for later use using PyTorch save and load fun
 torch.save(transformer.state_dict(), 'inference_model')
 ```
 
-The second one is for inference too, but also for when we want to load the model later, and want to resume the training.
-
+第二种方法也用于推理，但也用于我们希望稍后加载模型并希望继续训练的情况。
 
 
 
