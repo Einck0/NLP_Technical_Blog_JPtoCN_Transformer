@@ -1,4 +1,63 @@
-# 基于 Transformer 和 PyTorch 的日汉机器翻译模型
+# Transformer 模型详解
+
+Transformer 模型是一种基于**注意力机制**的深度学习模型，最初应用于自然语言处理领域，并取得了突破性的成果。如今，Transformer 模型已经广泛应用于各种领域，包括自然语言处理、计算机视觉、语音识别等。
+
+## 1. Transformer 模型的结构
+
+Transformer 模型主要由**编码器**和**解码器**两部分组成，如下图所示：
+
+![f63fdc2ecb2795f26f3f7e9122deef4c](https://github.com/Einck0/NLP_Technical_Blog_JPtoCN_Transformer/assets/91471683/a8a235dc-f651-4eee-90ae-cd5d9b65aef0)
+
+
+**编码器**：由多个编码器层堆叠而成，每个编码器层包含以下两个子层：
+
+* **自注意力层（Self-Attention Layer）**：用于计算输入序列中每个词与其他词之间的关系，并生成一个新的表示向量。
+* **前馈神经网络层（Feed-Forward Neural Network Layer）**：对自注意力层的输出进行非线性变换，进一步提取特征。
+
+**解码器**：同样由多个解码器层堆叠而成，每个解码器层包含以下三个子层：
+
+* **掩码自注意力层（Masked Self-Attention Layer）**：与编码器中的自注意力层类似，但只允许关注当前位置之前的词，防止模型在预测时“看到”未来的信息。
+* **编码器-解码器注意力层（Encoder-Decoder Attention Layer）**：用于将编码器输出的信息传递给解码器，帮助解码器更好地理解输入序列。
+* **前馈神经网络层（Feed-Forward Neural Network Layer）**：与编码器中的前馈神经网络层类似，对注意力层的输出进行非线性变换。
+
+## 2. 注意力机制
+
+注意力机制是 Transformer 模型的核心，它允许模型在处理序列数据时，**关注与当前任务最相关的部分**。
+
+以自注意力机制为例，其计算过程如下：
+
+1. **计算查询向量（Query）、键向量（Key）和值向量（Value）**：将输入序列中的每个词分别乘以三个不同的矩阵，得到对应的查询向量、键向量和值向量。
+2. **计算注意力权重**：将查询向量与所有键向量进行点积运算，然后使用 softmax 函数进行归一化，得到每个词对应的注意力权重。
+3. **加权求和**：将所有值向量乘以对应的注意力权重，然后求和，得到最终的输出向量。
+![3c32a475bfb76fb84f441f7a350879d3](https://github.com/Einck0/NLP_Technical_Blog_JPtoCN_Transformer/assets/91471683/1a032954-4d12-4563-b632-7587211e045a)
+
+
+## 3. Transformer 模型的优势
+
+相比于传统的循环神经网络（RNN）模型，Transformer 模型具有以下优势：
+
+* **并行计算**：Transformer 模型不需要像 RNN 模型那样按顺序处理序列数据，可以进行并行计算，大大提高了训练速度。
+* **长距离依赖关系建模**：注意力机制允许模型直接关注距离较远的词，有效解决了 RNN 模型难以捕捉长距离依赖关系的问题。
+* **可解释性强**：注意力权重可以直观地反映模型在进行预测时关注了哪些词，提高了模型的可解释性。
+
+## 4. Transformer 模型的应用
+
+Transformer 模型在自然语言处理领域取得了巨大的成功，例如：
+
+* **机器翻译**：Transformer 模型在机器翻译任务上取得了显著的性能提升，例如 Google 的 BERT 模型和 OpenAI 的 GPT 模型。
+* **文本生成**：Transformer 模型可以生成流畅、自然的文本，例如 OpenAI 的 GPT-3 模型。
+* **问答系统**：Transformer 模型可以理解和回答用户提出的问题，例如 Google 的 BERT 模型。
+
+除了自然语言处理领域，Transformer 模型还被应用于其他领域，例如：
+
+* **计算机视觉**：Transformer 模型可以用于图像分类、目标检测等任务。
+* **语音识别**：Transformer 模型可以用于语音识别和语音合成等任务。
+
+## 5. 总结
+
+Transformer 模型是一种强大的深度学习模型，其基于注意力机制的架构使其在处理序列数据方面具有显著优势。随着研究的不断深入，Transformer 模型将在更多领域发挥重要作用。  
+
+# 基于 Transformer 和 PyTorch 的日汉机器翻译模型  
 使用 Jupyter Notebook、PyTorch、Torchtext 和 SentencePiece 的教程
 
 ## 导入所需的包
