@@ -29,7 +29,8 @@ Transformer 模型主要由**编码器**和**解码器**两部分组成，如下
 1. **计算查询向量（Query）、键向量（Key）和值向量（Value）**：将输入序列中的每个词分别乘以三个不同的矩阵，得到对应的查询向量、键向量和值向量。
 2. **计算注意力权重**：将查询向量与所有键向量进行点积运算，然后使用 softmax 函数进行归一化，得到每个词对应的注意力权重。
 3. **加权求和**：将所有值向量乘以对应的注意力权重，然后求和，得到最终的输出向量。
-![3c32a475bfb76fb84f441f7a350879d3](https://github.com/Einck0/NLP_Technical_Blog_JPtoCN_Transformer/assets/91471683/1a032954-4d12-4563-b632-7587211e045a)
+![20191121221405540](https://github.com/Einck0/NLP_Technical_Blog_JPtoCN_Transformer/assets/91471683/6ad7b786-e9d3-4b18-ac94-f5a4288f103b)
+
 
 
 ## 3. Transformer 模型的优势
