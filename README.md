@@ -6,7 +6,8 @@ Transformer 模型是一种基于**注意力机制**的深度学习模型，最�
 
 Transformer 模型主要由**编码器**和**解码器**两部分组成，如下图所示：
 
-![f63fdc2ecb2795f26f3f7e9122deef4c](https://github.com/Einck0/NLP_Technical_Blog_JPtoCN_Transformer/assets/91471683/a8a235dc-f651-4eee-90ae-cd5d9b65aef0)
+![image](https://github.com/Einck0/NLP_Technical_Blog_JPtoCN_Transformer/assets/91471683/c3c1ebd3-4bf6-4d19-8ff6-93d39ecbc64a)
+
 
 
 **编码器**：由多个编码器层堆叠而成，每个编码器层包含以下两个子层：
